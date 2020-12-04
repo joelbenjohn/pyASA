@@ -37,8 +37,7 @@ def maintruss():
     Te = np.zeros((nen*1,nen*nsd,nel))
     for i in range(nel):
         Ke[:,:,i],ke[:,:,i],Te[:,:,i] = Ke_truss(E[i],A[i],xn,ien[:,i],nen,ndf,nsd)
-        
-        
+
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # % Organize equation number information to element level               %
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,7 +51,7 @@ def maintruss():
         F = np.zeros(neq)
         # % Insert applied loads into F 
         F = add_loads_to_force(F,f,id,nnp,ndf) 
-        
+
     #     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #     % Assemble Global Stiffness Matrix                                  %
     #     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
@@ -60,12 +59,13 @@ def maintruss():
         K = np.zeros((neq,neq))
         for i in range(nel):
             K = addstiff(K,Ke[:,:,i],LM[:,i],nee)
-                            
+
     #     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     #     % Solve the system of equations                                     %
     #     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         print(' *******   Solving for Nodal Displacements    *******')
         du = np.linalg.inv(K)@F
+
     print(' *******                                      *******')
     print(' *******     STRUCTURAL ANALYSIS COMPLETE     *******')
     print(' *******                                      *******')
@@ -81,9 +81,9 @@ def maintruss():
     # % element forces in global coordinates  
     Fe = np.zeros((ndf*nen,nel))
     # % element axial, stress, strain
-    axial = np.zeros(nel);                  
-    stress = np.zeros(nel);
-    strain = np.zeros(nel);
+    axial = np.zeros(nel)                  
+    stress = np.zeros(nel)
+    strain = np.zeros(nel)
     # % combine du and g then organize displacements by node number [dcomp size: ndf x nnp]
     dcomp = add_d2dcomp(g,du,id,nnp,ndf)
     for i in range(nel):
@@ -93,7 +93,7 @@ def maintruss():
     # %              REACTIONS               %
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     print(' *******          Assemble Reactions          *******')
-    Rcomp = assemble_rxns(Fe,idb,nnp,ndf,nee,ien,nen,nel);
+    Rcomp = assemble_rxns(Fe,idb,nnp,ndf,nee,ien,nen,nel)
         
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # %       PRINT RESULTS TO SCREEN        %
@@ -113,9 +113,9 @@ def maintruss():
     print(strreact)
     for n in range(nnp):
         if nsd == 3:
-            print('{:5}  {:10.3}  {:10.3}  {10.3}\n'.format(n,Rcomp[:,n]));
+            print('{:5}  {:10.3}  {:10.3}  {:10.3}\n'.format(n,Rcomp[0,n], Rcomp[1,n], Rcomp[2,n]))
         if nsd == 2:
-            print('{:5}  {:10.3}  {:10.3}\n'.format(n,Rcomp[0,n], Rcomp[1,n]));
+            print('{:5}  {:10.3}  {:10.3}\n'.format(n,Rcomp[0,n], Rcomp[1,n]))
     print(' ')
 
     print('Element Axial force(N)/stress(MPa)/strain')
@@ -123,3 +123,4 @@ def maintruss():
     for i in range(nel):
         print('{:5}  {:10.3}  {:10.3}  {:10.3}\n'.format(i,axial[i],stress[i],strain[i])); 
     print(' ')
+# %%

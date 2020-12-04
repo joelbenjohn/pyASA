@@ -23,9 +23,9 @@ def add_loads_to_force(F, f, id, nnp, ndf):
     for j in range(nnp):
         for i in range(ndf):
             # Get global equation number
-            gen = int(id[i, j])-1
+            gen = int(id[i, j])
             # Check Global Equation Number
             if gen != 0:
                 # Add nodal load to global force vector
-                F[gen] = f[i, j]
+                F[gen-1] = f[i, j]
     return F

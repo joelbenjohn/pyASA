@@ -20,7 +20,7 @@ class MainPrePro:
 
         if analysis == 'truss' and dims == 3:
             minp = [3, 3, 2, 3, 4]
-            nodes = np.array([[1, 0, 0, 6, 0, 0, 0, 0, -2.5, -4, 0,0, 0], [2, -1, -3, 0, 1, 1, 1, 0, 0, 0, 0,0, 0], [3, 2, 0, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0], [4, -1, 3, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0]])
+            nodes = np.array([[1, 0, 0, 6, 0, 0, 0, 0, -2.5, -4.3301, 0,0, 0], [2, -1, -3, 0, 1, 1, 1, 0, 0, 0, 0,0, 0], [3, 2, 0, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0], [4, -1, 3, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0]])
             ien = np.array([[1, 1, 2, 200, 1000], [2, 1, 3, 200, 1000], [3, 1, 4, 200, 1000]])
         return minp, nodes, ien
     def Mesh(self, minp):
@@ -131,7 +131,7 @@ class MainPrePro:
         Data.DATA['nen'] = self.nen
         Data.DATA['nel'] = len(self.ien1r0.children)
         Data.DATA['nnp'] = len(self.noder0.children)
-        
+
     def run(self, analysis, dims):
         self.minp, self.nodes, self.ien = self.prevals(analysis, dims)
         self.analysis = analysis; self.dims = dims
