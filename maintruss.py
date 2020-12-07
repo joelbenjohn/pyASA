@@ -88,39 +88,42 @@ def maintruss():
     dcomp = add_d2dcomp(g,du,id,nnp,ndf)
     for i in range(nel):
         Fe[:,i],axial[i],stress[i],strain[i] = truss_forces(dcomp,Ke[:,:,i],Te[:,:,i],ien[:,i],nen,ndf,A[i],E[i])
-
+    data['dcomp'] = dcomp
+    data['axial'] = axial
+    data['stress'] = stress
+    data['strain'] = strain
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # %              REACTIONS               %
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     print(' *******          Assemble Reactions          *******')
     Rcomp = assemble_rxns(Fe,idb,nnp,ndf,nee,ien,nen,nel)
-        
+    data['Rcomp'] = Rcomp  
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # %       PRINT RESULTS TO SCREEN        %
     # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    print('Nodal Displacements')
+    print('Nodal Displacements(mm|in)')
     strnode = ' node          d1          d2          ' if nsd== 2 else ' node          d1          d2          d3'
     print(strnode)
     for n in range(nnp):
         if nsd == 3:
-            print('{:5}  {:10.5}  {:10.5}  {:10.5}\n'.format(n,dcomp[0,n], dcomp[1,n], dcomp[2,n] ))
+            print('{:5}  {:10.5}  {:10.5}  {:10.5}\n'.format(n+1,dcomp[0,n], dcomp[1,n], dcomp[2,n] ))
         elif nsd == 2:
-            print('{:5}  {:10.5}  {:10.5}\n'.format(n,dcomp[0,n], dcomp[1,n]))
+            print('{:5}  {:10.5}  {:10.5}\n'.format(n+1,dcomp[0,n], dcomp[1,n]))
     print(' ')
 
-    print('Nodal Reactions(N)')
+    print('Nodal Reactions(N|lb)')
     strreact = ' node          R1          R2          ' if nsd== 2 else ' node          R1          R2          R3'
     print(strreact)
     for n in range(nnp):
         if nsd == 3:
-            print('{:5}  {:10.3}  {:10.3}  {:10.3}\n'.format(n,Rcomp[0,n], Rcomp[1,n], Rcomp[2,n]))
+            print('{:5}  {:10.3}  {:10.3}  {:10.3}\n'.format(n+1,Rcomp[0,n], Rcomp[1,n], Rcomp[2,n]))
         if nsd == 2:
-            print('{:5}  {:10.3}  {:10.3}\n'.format(n,Rcomp[0,n], Rcomp[1,n]))
+            print('{:5}  {:10.3}  {:10.3}\n'.format(n+1,Rcomp[0,n], Rcomp[1,n]))
     print(' ')
 
-    print('Element Axial force(N)/stress(MPa)/strain')
+    print('Element Axial force(N|lb)/stress(MPa|lb/in^2)/strain')
     print(' elem       force      stress      strain')
     for i in range(nel):
-        print('{:5}  {:10.3}  {:10.3}  {:10.3}\n'.format(i,axial[i],stress[i],strain[i])); 
+        print('{:5}  {:10.3}  {:10.3}  {:10.3}\n'.format(i+1,axial[i],stress[i],strain[i])); 
     print(' ')
 # %%

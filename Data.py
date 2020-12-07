@@ -10,5 +10,10 @@ DATA = {
     'A' : [],
     'idb' : [],
     'f' : [],
-    'g' : []
+    'g' : [],
+    'dcomp':[],
+    'Rcomp' : [],
+    'stress': [],
+    'strain': [],
+    'axial': []
 }

@@ -15,13 +15,13 @@ class MainPrePro:
     def prevals(self, analysis, dims):
         if analysis == 'truss' and dims == 2:
             minp = [2, 2, 2, 3, 4]
-            nodes =np.array([[1, 0, 3, 1, 1, 0, 0, 0, 0], [2, 4, 3, 1, 1, 0, 0, 0, 0], [3, 0, 0, 1, 1, 0, 0, 0, 0], [4, 4, 0, 0, 0, 20.71*10**3, -77.27*10**3, 0, 0]])
-            ien = np.array([[1, 3, 4, 200, 400], [2, 1, 4, 200, 150], [3, 4, 2, 200, 200]])
+            nodes =np.array([[1, 0, 3*10**3, 1, 1, 0, 0, 0, 0], [2, 4*10**3, 3*10**3, 1, 1, 0, 0, 0, 0], [3, 0, 0, 1, 1, 0, 0, 0, 0], [4, 4*10**3, 0, 0, 0, 20.71*10**3, -77.27*10**3, 0, 0]])
+            ien = np.array([[1, 3, 4, 200*10**3, 400], [2, 1, 4, 200*10**3, 150], [3, 4, 2, 200*10**3, 200]])
 
         if analysis == 'truss' and dims == 3:
             minp = [3, 3, 2, 3, 4]
-            nodes = np.array([[1, 0, 0, 6, 0, 0, 0, 0, -2.5, -4.3301, 0,0, 0], [2, -1, -3, 0, 1, 1, 1, 0, 0, 0, 0,0, 0], [3, 2, 0, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0], [4, -1, 3, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0]])
-            ien = np.array([[1, 1, 2, 200, 1000], [2, 1, 3, 200, 1000], [3, 1, 4, 200, 1000]])
+            nodes = np.array([[1, 0, 0, 6*10**3, 0, 0, 0, 0, -2.5, -4.3301, 0,0, 0], [2, -1*10**3, -3*10**3, 0, 1, 1, 1, 0, 0, 0, 0,0, 0], [3, 2*10**3, 0, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0], [4, -1*10**3, 3*10**3, 0, 1, 1, 1 , 0, 0, 0, 0,0, 0]])
+            ien = np.array([[1, 1, 2, 200*10**3, 1000], [2, 1, 3, 200*10**3, 1000], [3, 1, 4, 200*10**3, 1000]])
         return minp, nodes, ien
     def Mesh(self, minp):
         self.meshtitle = widgets.Label( value = 'Mesh')
@@ -43,19 +43,19 @@ class MainPrePro:
     def nodes_widget(self, nodes, analysis, dims):
         self.nodeTitle = widgets.Label(value='Nodes')
         if analysis == 'truss' and dims == 2:
-            self.nodetext = ['Node#','x','y', 'dofx', 'dofy', 'Fx', 'Fy', 'gx', 'gy']
+            self.nodetext = ['Node#','x (mm|in)','y (mm|in)', 'dofx', 'dofy', 'Fx (N|lb)', 'Fy(N|lb)', 'gx(mm|in)', 'gy(mm|in)']
         elif analysis == 'truss' and dims == 3:
-            self.nodetext = ['Node#','x','y', 'z', 'dofx', 'dofy', 'dofz', 'Fx', 'Fy', 'Fz', 'gx', 'gy', 'gz']
+            self.nodetext = ['Node#','x (mm|in)','y (mm|in)', 'z (mm|in)', 'dofx', 'dofy', 'dofz', 'Fx (N|lb)', 'Fy (N|lb)', 'Fz (N|lb)', 'gx(mm|in)', 'gy(mm|in)', 'gz(mm|in)']
         self.nodes = nodes
         self.node = [[] for i in range(len(self.nodes))]
         self.nitems = [[] for i in range(len(self.nodes))]
         ADDNODE = widgets.Button(description="Add Node", layout= widgets.Layout(border = 'solid 1px black'))
         DELNODE = widgets.Button(description="Remove Node", layout= widgets.Layout(border = 'solid 1px black'))
-        self.nlabel= widgets.HBox([widgets.Label(value=self.nodetext[j], layout = widgets.Layout(width='57px')) for j in range(len(self.nodetext))])
+        self.nlabel= widgets.HBox([widgets.Label(value=self.nodetext[j], layout = widgets.Layout(width='65px')) for j in range(len(self.nodetext))])
         for i in range(len(self.nodes)):
             if(i<len(self.nodes)):
                 for j in range(len(self.nodetext)):
-                    self.nitems[i].append(widgets.FloatText(value=self.nodes[i, j], layout = widgets.Layout(width='57px')))
+                    self.nitems[i].append(widgets.FloatText(value=self.nodes[i, j], layout = widgets.Layout(width='65px')))
                 self.node[i] = widgets.HBox(self.nitems[i])
         self.noder0 = widgets.VBox([self.node[j] for j in range(len(self.nodes))])
         self.brow = widgets.HBox([ADDNODE, DELNODE])
@@ -67,17 +67,17 @@ class MainPrePro:
 
     def elems_widget(self, ien):
         self.ienTitle = widgets.Label(value='Elements')
-        self.ientext = ['Elem#','Node i','Node j','E(Gpa)', 'A(mm^2)']
+        self.ientext = ['Elem#','Node i','Node j','E(Mpa|lb/in^2)', 'A(mm^2|in^2)']
         self.ien = ien
         self.ien1 = [[] for i in range(len(self.ien))]
         self.Citems = [[] for i in range(len(self.ien))]
         ADDien = widgets.Button(description="Add Element", layout= widgets.Layout(border = 'solid 1px black'))
         DELien = widgets.Button(description="Remove Element", layout= widgets.Layout(border = 'solid 1px black'))
-        self.nlabel= widgets.HBox([widgets.Label(value=self.ientext[j], layout = widgets.Layout(width='57px')) for j in range(len(self.ientext))])
+        self.nlabel= widgets.HBox([widgets.Label(value=self.ientext[j], layout = widgets.Layout(width='100px')) for j in range(len(self.ientext))])
         for i in range(len(self.ien)):
             if(i<len(self.ien)):
                 for j in range(len(self.ientext)):
-                    self.Citems[i].append(widgets.FloatText(value=self.ien[i, j], layout = widgets.Layout(width='57px')))
+                    self.Citems[i].append(widgets.FloatText(value=self.ien[i, j], layout = widgets.Layout(width='100px')))
                 self.ien1[i] = widgets.HBox(self.Citems[i])
         self.ien1r0 = widgets.VBox([self.ien1[j] for j in range(len(self.ien))])
         self.brow = widgets.HBox([ADDien, DELien])
@@ -138,7 +138,7 @@ class MainPrePro:
         self.rnode, self.ADDNODE, self.DELNODE = self.nodes_widget(self.nodes, self.analysis, self.dims)
         self.rien1, self.ADDNODE = self.elems_widget(self.ien)
         self.rmesh, self.msubmit = self.Mesh(self.minp)
-        self.Submit = widgets.Button(description = 'Submit')
+        self.Submit = widgets.Button(description = 'Submit', layout= widgets.Layout(border = 'solid 1px black'))
         self.page = widgets.VBox([self.rmesh, self.rnode, self.rien1, self.Submit])
         self.Submit.on_click(self.fsubmit)
         return self.page
